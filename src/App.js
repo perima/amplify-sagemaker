@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { Header, Button, Checkbox, Form, Grid, Container } from 'semantic-ui-react'
+import { Header, Button, Checkbox, Form, Grid, Container } from 'semantic-ui-react';
 import axios from 'axios';
+import { Segment } from 'semantic-ui-react';
 
-/*
+import Amplify, { API } from 'aws-amplify';
+import aws_exports from './aws-exports';
 
-by the way for the UI .. i need a submit button and 6 text boxes with options 
-buying, maintained, doors, persons, luggage_boot, and safety . We can finish it in next few weeks -
-
-*/
+Amplify.configure(aws_exports);
 
 
 class App extends Component {
@@ -16,43 +15,63 @@ class App extends Component {
     super(props)
     
     this.state = {
-      inferenceURL: null
+      inferenceURL: null,
+      inferenceResult: '',
+      buying: 'low',
+      maintained: 'high',
+      doors: 5,
+      persons: 5,
+      boot: 'big',
+      safety: 'high'
     }
     
     this.handleChange = this.handleChange.bind(this);
+    this.handleInference = this.handleInference.bind(this);
   }
 
-    handleChange(event) {
-      console.log(event.target.value);
+    handleChangeOld(event) {
         this.setState({inferenceURL: event.target.value});
-      }
+    }
+    
+    
+    handleChange(event){
+      var key = event.target.name
+      var val = event.target.value
+      var obj  = {}
+      obj[key] = val
+      this.setState(obj)
+    }
+    
+      
 
     handleInference(event) {
-      console.log('handleInference: ', event.target.value);
-      }
-    
-  handleInferenceOld = event => {
-    event.preventDefault();
-
-    const payload = {
+        console.log('handleInference: ', this.state);
+        let payload = {
+          buying: this.state.buying,
+          maintained: this.state.maintained,
+          doors: this.state.doors,
+          persons: this.state.persons,
+          boot: this.state.boot,
+          safety: this.state.safety
+        };
+        let myInit = {
+            body: {
+              inferenceURL: this.state.inferenceURL,
+              payload: payload
+            } 
+        };
+        console.log('myInit', myInit);
         
-      };
+        API.post('sagemaker', 'items/', myInit).then(response => {
+            // Add your code here
+        }).catch(error => {
+            console.log('API post error', error.response);
+            this.setState({
+              inferenceResult: 'error:' + error.response
+            })
+        });  
+    }
       
-      console.log('handleInference', payload);
-
-    /*
-    axios.post(`https://jsonplaceholder.typicode.com/users`, { payload })
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-      });
-      
-       value: {this.state.inferenceURL}
-       
-      */
-  }
-  
-  
   render() {
     return (
       <div>
@@ -62,7 +81,7 @@ class App extends Component {
               <Form.Field>
                 <label>Inference URL</label>
                 <input
-                name="name"
+                  name="inferenceURL"
                   placeholder='Deployed model inference endpoint' 
                   onChange={this.handleChange} 
                   value={this.state.inferenceURL}
@@ -70,30 +89,62 @@ class App extends Component {
               </Form.Field>
               <Form.Field>
                 <label>Buying</label>
-                <input placeholder='buying' />
+                <input 
+                  name="buying"
+                  placeholder='buying'
+                  onChange={this.handleChange} 
+                  value={this.state.buying}
+                />
               </Form.Field>
                     <Form.Field>
                       <label>Maintained</label>
-                      <input placeholder='maintained' />
+                      <input 
+                          placeholder='maintained'
+                          name="maintained"
+                          onChange={this.handleChange} 
+                          value={this.state.maintained}
+                          />
                     </Form.Field>
                     <Form.Field>
                       <label>Doors</label>
-                      <input placeholder='doors' />
+                      <input 
+                          placeholder='doors'
+                          name="doors"
+                          onChange={this.handleChange} 
+                          value={this.state.doors}
+                          />
                     </Form.Field>
                     <Form.Field>
                       <label>Persons</label>
-                      <input placeholder='persons' />
+                      <input 
+                          placeholder='persons'
+                          name="persons"
+                          onChange={this.handleChange} 
+                          value={this.state.persons}
+                      />
                     </Form.Field>
                     <Form.Field>
                       <label>Luggage boot</label>
-                      <input placeholder='luggage boot' />
+                      <input 
+                          placeholder='luggage boot'
+                          name="boot"
+                          onChange={this.handleChange} 
+                          value={this.state.boot}
+                      />
                     </Form.Field>
                     <Form.Field>
                       <label>Safety</label>
-                      <input placeholder='safety' />
+                      <input 
+                          placeholder='safety'
+                           name="safety"
+                            onChange={this.handleChange} 
+                            value={this.state.safety}
+                          />
                     </Form.Field>
                     <Button onClick={this.handleInference}>Get inference</Button>
                   </Form>
+                  
+                   <Segment>Inference result: {this.state.inferenceResult}</Segment>
             </Container>
             </div>
     );
