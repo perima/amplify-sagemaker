@@ -19,10 +19,10 @@ Once your Cloud9 environment is up and running, open a terminal and run the foll
 
 ```cd amplify-sagemaker```
 
-```cat <<END > ~/.aws/config
-[default]
-region=us-east-1
-END```
+```cat <<END > ~/.aws/config```
+```[default]```
+```region=us-east-1```
+```END```
 
 ```amplify init```
 
