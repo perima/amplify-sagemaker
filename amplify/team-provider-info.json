@@ -1,0 +1,14 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-sagemaker-v2-20190430001504-authRole",
+            "UnauthRoleArn": "arn:aws:iam::927378468065:role/amplify-sagemaker-v2-20190430001504-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::927378468065:role/amplify-sagemaker-v2-20190430001504-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-sagemaker-v2-20190430001504-deployment",
+            "UnauthRoleName": "amplify-sagemaker-v2-20190430001504-unauthRole",
+            "StackName": "amplify-sagemaker-v2-20190430001504",
+            "StackId": "arn:aws:cloudformation:us-east-1:927378468065:stack/amplify-sagemaker-v2-20190430001504/01082b20-6add-11e9-85a1-0e92b042adf6"
+        }
+    }
+}
