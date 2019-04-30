@@ -1,6 +1,43 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-##
-Sample amplify react single page app that invokes a sagemaker endpoint for inference. 
+## Sample AWS Amplify SageMaker React app
+
+A Sample amplify react single page app that invokes a sagemaker endpoint for inference. The sagemaker endpoint is not part of this project and needs to be setup separately.
+
+
+## Setup using Cloud9
+Once your Cloud9 environment is up and running, open a terminal and run the following commands.
+
+```git clone https://github.com/perima/amplify-sagemaker.git```
+
+```pip install --user --upgrade awscli```
+
+```nvm install v8.11.0```
+
+```nvm alias default v8.11.0```
+
+```npm install -g @aws-amplify/cli```
+
+```cd amplify-sagemaker```
+
+```cat <<END > ~/.aws/config
+[default]
+region=us-east-1
+END```
+
+```amplify init```
+
+When asked by amplify init, use the following settings when asked(mostly defaults):
+
+Do you want to use an existing environment? no
+Choose your default editor: None
+Do you want to use an AWS profile? Yes (select default from the list)
+
+```npm install --save```
+
+```amplify push```
+
+```npm start```
+
 
 ## Available Scripts
 
